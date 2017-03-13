@@ -17,6 +17,14 @@
     color: red;
 }
 
+.alreadyDown {
+    color: red;
+}
+
+.alreadyUp {
+    color: green;
+}
+
 .positive {
     color: green;
 }
@@ -55,3 +63,4 @@
 .votingFooter {
     padding-left: 16px;
 }
+

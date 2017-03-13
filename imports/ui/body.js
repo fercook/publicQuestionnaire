@@ -20,7 +20,7 @@ Template.newQuestion.onCreated(function helloOnCreated() {
 
 Template.newQuestion.helpers({
     debugMode() {
-        return false;
+        return true;
     }
 });
 
@@ -79,7 +79,14 @@ Template.question.helpers({
         if ((this.votesUp - this.votesDown)>0) {state="positive"}
         else if ((this.votesUp - this.votesDown)<0) {state="negative"}
         return state;
-
+    },
+    alreadyUp() {
+       let cookie = Cookie.get("caseRetreatVote");
+       return (cookie && cookie.indexOf(this._id+"+")>=0)? "alreadyUp" : "";
+    },
+    alreadyDown() {
+       let cookie = Cookie.get("caseRetreatVote");
+       return (cookie && cookie.indexOf(this._id+"-")>=0)? "alreadyDown" : "";
     }
 });
 
@@ -98,7 +105,7 @@ Template.question.events({
                     votesUp: this.votesUp + 1
                 }
             });
-            let newCookie = this._id;
+            let newCookie = this._id+"+";
             if (cookie) { newCookie = newCookie + " "+cookie;}
             Cookie.set("caseRetreatVote", newCookie);
         } else {
@@ -117,7 +124,7 @@ Template.question.events({
                     votesDown: this.votesDown + 1
                 }
             });
-            let newCookie = this._id;
+            let newCookie = this._id+"-";
             if (cookie) { newCookie = newCookie + " "+cookie;}
             Cookie.set("caseRetreatVote", newCookie);
         } else {
