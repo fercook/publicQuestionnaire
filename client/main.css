@@ -1,0 +1,53 @@
+/* CSS declarations go here */
+.toggleComments {
+    font-size: small;
+    font-style: italic;
+    color: darkslategray;
+}
+
+.toggleComments:hover {
+    color: steelblue;
+}
+
+.voteUp:hover {
+    color: green;
+}
+
+.voteDown:hover {
+    color: red;
+}
+
+.positive {
+    color: green;
+}
+
+.negative {
+    color: red;
+}
+
+.arrows {
+    font-weight: bold;
+}
+
+.comment {
+    font-style: italic;
+    padding-top: 7px;
+}
+
+.question {
+    width: 100%;
+    display:block;
+    padding-bottom: 10px;
+    padding-top:6px;
+}
+
+.new-comment {
+    padding: 8px;
+    padding-top: 12px;
+    width: 96%;
+    padding-left: 4%;
+}
+
+.votingFooter {
+    padding-left: 16px;
+}
