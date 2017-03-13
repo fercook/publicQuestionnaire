@@ -29,6 +29,10 @@
     font-weight: bold;
 }
 
+.comments {
+    padding-top: 14px;
+}
+
 .comment {
     font-style: italic;
     padding-top: 7px;

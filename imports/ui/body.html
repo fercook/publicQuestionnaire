@@ -55,19 +55,15 @@
         <span class="pull-right toggleComments">Show comments</span>
         </span>
         <span class="comments collapse" aria-expanded="false" style="height: 0px;" id="comments_{{_id}}">
-            <table class="table table-condensed">
+            <ul>
                 {{#each comments}}
-                <tr>{{> comment}}
-                </tr>
+                <li>{{> comment}}
+                </li>
                 {{/each}}
-                <tr>
-                    <td>
-                        <form class="new-comment">
+            </ul>
+            <form class="new-comment">
                             <input type="text" name="text" class="form-control" placeholder="Add a comment..." aria-describedby="basic-addon1">
-                        </form>
-                    </td>
-                </tr>
-            </table>
+            </form>
         </span>
     </td>
 </template>
@@ -75,11 +71,9 @@
 
 
 <template name="comment">
-    <td>
         <span class="comment">
             {{this}}
         </span>
-    </td>
 </template>
 
 
