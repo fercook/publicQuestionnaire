@@ -60,7 +60,7 @@ Template.listOfQuestions.helpers({
     questions() {
         return Questions.find({}, {
             sort: {
-                createdAt: -1
+                votesUp: -1//createdAt: -1
             }
         });
     }
@@ -97,7 +97,7 @@ Template.question.events({
         event.preventDefault();
         // Check if previously voted
         let cookie = Cookie.get("caseRetreatVote");
-        if (!cookie || cookie.indexOf(this._id)<0) {
+        if (true || !cookie || cookie.indexOf(this._id)<0) {
             Questions.update({
                 _id: this._id
             }, {
@@ -116,7 +116,7 @@ Template.question.events({
         // Prevent default browser form submit
         event.preventDefault();
         let cookie = Cookie.get("caseRetreatVote");
-        if (!cookie || cookie.indexOf(this._id)<0) {
+        if (true ||  !cookie || cookie.indexOf(this._id)<0) {
             Questions.update({
                 _id: this._id
             }, {
@@ -134,11 +134,11 @@ Template.question.events({
     'click .toggleComments' (event){
         event.preventDefault();
         let currentText = event.target.innerHTML;
-        if (currentText=="Show comments") {
+        if (currentText=="Show / Add comments") {
             event.target.innerHTML="Hide comments";
             $('#comments_'+this._id).collapse('toggle');
         } else {
-            event.target.innerHTML="Show comments";
+            event.target.innerHTML="Show / Add comments";
             $('#comments_'+this._id).collapse('toggle');
         }
    },

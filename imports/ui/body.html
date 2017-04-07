@@ -10,10 +10,12 @@
             </div>
         </div>
 
+        <h1>Current list of suggestions</h1>
+
 
         <div class="panel panel-default" id="questionList">
             <div class="panel-heading">
-                <h3 class="panel-title">Or vote/comment on what others have suggested</h3>
+                <h3 class="panel-title">Vote/comment on what others have suggested</h3>
             </div>
             <table class="table">
                 <tbody>
@@ -51,8 +53,13 @@
         <span class="question">{{text}}
         </span>
         <span class="votingFooter">
-        <span class="glyphicon glyphicon-arrow-up voteUp {{alreadyUp}}" aria-hidden="true"></span>  <span class="arrows {{posORneg}}">{{diff}}</span> (+{{votesUp}}/-{{votesDown}}) <span class="glyphicon glyphicon-arrow-down voteDown {{alreadyDown}}" aria-hidden="true"></span>
-        <span class="pull-right toggleComments">Show comments</span>
+        <span class="glyphicon glyphicon-circle-arrow-up voteArrow voteUp {{alreadyUp}}" aria-hidden="true"></span><span class="soft">+{{votesUp}}</span>
+            &nbsp;
+            <span class="voteDifference {{posORneg}}">{{diff}}</span>
+            &nbsp;
+            <span class="soft">-{{votesDown}}</span>
+            <span class="glyphicon glyphicon-circle-arrow-down voteArrow voteDown {{alreadyDown}}" aria-hidden="true"></span>
+        <span class="pull-right toggleComments">Show / Add comments</span>
         </span>
         <span class="comments collapse" aria-expanded="false" style="height: 0px;" id="comments_{{_id}}">
             <ul>
