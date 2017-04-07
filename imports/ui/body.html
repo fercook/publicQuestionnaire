@@ -1,14 +1,7 @@
 <body>
     <div class="container">
-        <h1>What would you like to discuss on next CASE's retreat?</h1>
-        <div class="panel panel-default" id="newQuestion">
-            <div class="panel-heading">
-                <h3 class="panel-title">Suggest a new topic or question</h3>
-            </div>
-            <div class="panel-body">
-                {{> newQuestion}}
-            </div>
-        </div>
+
+        {{> newQuestion}}
 
         <h1>Current list of suggestions</h1>
 
@@ -28,14 +21,37 @@
 
 
 <template name="newQuestion">
-    {{#if debugMode}}
-    <div class="panel panel-default borrar" id="borrar">
-            BORRAR TODO
+    <h1>What would you like to discuss on next CASE's retreat?</h1>
+    <div class="panel panel-default" id="newQuestion">
+        <div class="panel-heading">
+            <h3 class="panel-title">Suggest a new topic or question</h3>
+        </div>
+        <div class="panel-body">
+
+            {{#if debugMode}}
+            <form>
+                <div class="form-group row">
+                    <div class="offset-sm-4 col-sm-8">
+                        <button type="cancel" class="btn btn-danger borrar" id="borrar">BORRAR TODO</button>
+                    </div>
+                </div>
+            </form>
+            {{/if}}
+
+            <form class="new-question">
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <label class="sr-only" for="inlineFormInput">Question</label>
+                            <input type="text" name="text" class="form-control" placeholder="Type to add a new question" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="submit" class="btn btn-primary ">Submit</button>
+                        </div>
+                    </div>            </form>
+
+
+        </div>
     </div>
-    {{/if}}
-    <form class="new-question">
-        <input type="text" name="text" class="form-control" placeholder="Type to add a new question" aria-describedby="basic-addon1">
-    </form>
 </template>
 
 
@@ -54,11 +70,11 @@
         </span>
         <span class="votingFooter">
         <span class="glyphicon glyphicon-circle-arrow-up voteArrow voteUp {{alreadyUp}}" aria-hidden="true"></span><span class="soft">+{{votesUp}}</span>
-            &nbsp;
-            <span class="voteDifference {{posORneg}}">{{diff}}</span>
-            &nbsp;
-            <span class="soft">-{{votesDown}}</span>
-            <span class="glyphicon glyphicon-circle-arrow-down voteArrow voteDown {{alreadyDown}}" aria-hidden="true"></span>
+        &nbsp;
+        <span class="voteDifference {{posORneg}}">{{diff}}</span>
+        &nbsp;
+        <span class="soft">-{{votesDown}}</span>
+        <span class="glyphicon glyphicon-circle-arrow-down voteArrow voteDown {{alreadyDown}}" aria-hidden="true"></span>
         <span class="pull-right toggleComments">Show / Add comments</span>
         </span>
         <span class="comments collapse" aria-expanded="false" style="height: 0px;" id="comments_{{_id}}">
@@ -78,7 +94,7 @@
 
 
 <template name="comment">
-        <span class="comment">
+    <span class="comment">
             {{this}}
         </span>
 </template>
