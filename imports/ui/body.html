@@ -47,10 +47,10 @@
     <div class="panel panel-default" id="questionList">
         <div class="panel-heading">
             <div class="row">
-                <div class="col-sm-8">
+                <div class="col-sm-6">
                     <h3 class="panel-title">Vote/comment on what others have suggested</h3>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-4">
                     <span class="toggler">Sort by <span class="sortVotes hoverBold">votes <span class="{{voteSortCriteria}}" aria-hidden="true"> </span> </span>or <span class="sortDate hoverBold">date <span class="{{dateSortCriteria}}" aria-hidden="true"> </span></span>
                     </span>
                 </div>
@@ -74,7 +74,7 @@
 <template name="question">
     <td>
         <span class="question">{{text}}
-            {{#if admin}} <button type="cancel" class="btn btn-danger borrar" id="">BORRAR</button> {{/if}}
+            {{#if admin}} <button type="cancel" class="btn btn-danger borrarQuestion pull-right" id="">BORRAR</button> {{/if}}
         </span>
         <span class="votingFooter">
             <span class="voteUp">
@@ -109,6 +109,7 @@
             <span class="glyphicon glyphicon-thumbs-up commentVoting voteColor {{commentVoted}}" aria-hidden="true"></span>
         </span>
         <span class="soft likes">+{{votes}}</span>
+        {{#if admin}} <button type="cancel" class="btn btn-danger borrarComment btn-xs" style="font-size: x-small" id="">borrar</button> {{/if}}
 
     </span>
 

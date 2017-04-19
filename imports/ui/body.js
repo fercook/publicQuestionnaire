@@ -32,20 +32,20 @@ $(function() {
 Template.newQuestion.onCreated(function helloOnCreated() {
     // counter starts at 0
     this.counter = new ReactiveVar(0);
-    this.authorized = new ReactiveVar();
+    this.authorized = new ReactiveVar(false);
+    var self = this;
+    let adminCookie = Cookie.get("caseAdmin");
+    if (adminCookie) {
+        Meteor.apply("passCode", [adminCookie], function(error, result) {
+            self.authorized.set(result);
+        });
+    }
 });
 
 Template.newQuestion.helpers({
-    debugMode() {
-        return true;
+        'admin' () {
+        return Template.instance().authorized.get();
     },
-    'admin'() {
-        let adminCookie = Cookie.get("caseAdmin");
-        let authorized = null;
-        Meteor.apply("passCode", [adminCookie], function(error,result){authorized=result;console.log("in:"+authorized);authorized=result;});
-        console.log("out:"+authorized);
-        return adminCookie && authorized;
-    }
 });
 
 Template.newQuestion.events({
@@ -87,31 +87,50 @@ Template.listOfQuestions.helpers({
     questions() {
         let criteria = Template.instance().sortCriteria.get();
         let sorter = null;
-        if (criteria =="VotesDown") {sorter = {sort: {votesUp: -1}}}
-        else if (criteria =="VotesUp") {sorter = {sort: {votesUp: 1}}}
-        else if (criteria =="DateDown") {sorter = {sort: {createdAt: -1}}}
-        else if (criteria =="DateUp") {sorter = {sort: {createdAt: 1}}};
+        if (criteria == "VotesDown") {
+            sorter = {
+                sort: {
+                    votesUp: -1
+                }
+            }
+        } else if (criteria == "VotesUp") {
+            sorter = {
+                sort: {
+                    votesUp: 1
+                }
+            }
+        } else if (criteria == "DateDown") {
+            sorter = {
+                sort: {
+                    createdAt: -1
+                }
+            }
+        } else if (criteria == "DateUp") {
+            sorter = {
+                sort: {
+                    createdAt: 1
+                }
+            }
+        };
         return Questions.find({}, sorter);
     },
-    voteSortCriteria(){
+    voteSortCriteria() {
         let curCriteria = Template.instance().sortCriteria.get();
         let txt = "";
-        if (curCriteria =="VotesDown") {
+        if (curCriteria == "VotesDown") {
             txt = 'glyphicon glyphicon-triangle-bottom'
-        }
-        else if (curCriteria =="VotesUp") {
+        } else if (curCriteria == "VotesUp") {
             txt = 'glyphicon glyphicon-triangle-top'
         }
         return txt;
 
     },
-    dateSortCriteria(){
+    dateSortCriteria() {
         let curCriteria = Template.instance().sortCriteria.get();
         let txt = "";
-        if (curCriteria =="DateDown") {
+        if (curCriteria == "DateDown") {
             txt = 'glyphicon glyphicon-triangle-bottom'
-        }
-        else if (curCriteria =="DateUp") {
+        } else if (curCriteria == "DateUp") {
             txt = 'glyphicon glyphicon-triangle-top'
         }
         return txt;
@@ -157,7 +176,7 @@ Template.listOfQuestions.events({
         'click .sortVotes' (event) {
             event.preventDefault();
             let curCriteria = Template.instance().sortCriteria.get();
-            if (curCriteria=="VotesUp") {
+            if (curCriteria == "VotesUp") {
                 Template.instance().sortCriteria.set("VotesDown");
             } else {
                 Template.instance().sortCriteria.set("VotesUp");
@@ -166,11 +185,23 @@ Template.listOfQuestions.events({
         'click .sortDate' (event) {
             event.preventDefault();
             let curCriteria = Template.instance().sortCriteria.get();
-            if (curCriteria=="DateUp") {
+            if (curCriteria == "DateUp") {
                 Template.instance().sortCriteria.set("DateDown");
             } else {
                 Template.instance().sortCriteria.set("DateUp");
             }
+    }
+});
+
+Template.question.onCreated(function helloOnCreated() {
+    // counter starts at 0
+    this.authorized = new ReactiveVar(false);
+    var self = this;
+    let adminCookie = Cookie.get("caseAdmin");
+    if (adminCookie) {
+        Meteor.apply("passCode", [adminCookie], function(error, result) {
+            self.authorized.set(result);
+        });
     }
 });
 
@@ -181,7 +212,7 @@ Template.question.helpers({
     },
     comments() {
         let parentID = this._id;
-        return _.map(this.comments, function(d){
+        return _.map(this.comments, function(d) {
             let newd = d;
             newd.parentID = parentID;
             return newd;
@@ -207,7 +238,7 @@ Template.question.helpers({
     questionID() {
         return this._id;
     },
-    formatDate(date){
+    formatDate(date) {
         let timestamp = new Date(date);
         var curr_date = timestamp.getDate();
         var curr_month = timestamp.getMonth();
@@ -216,19 +247,25 @@ Template.question.helpers({
         var curr_hour = timestamp.getHours();
         var curr_minute = timestamp.getMinutes();
         var curr_second = timestamp.getSeconds();
-        result = curr_date + "/" + curr_month + "/" + curr_year+ " " + curr_hour+":"+ curr_minute+":"+ curr_second;
+        result = curr_date + "/" + curr_month + "/" + curr_year + " " + curr_hour + ":" + curr_minute + ":" + curr_second;
         return result;
+    },
+        'admin' () {
+        return Template.instance().authorized.get();
     }
 });
 
 Template.question.events({
-
+    'click .borrarQuestion' (event){
+        event.preventDefault();
+        Questions.remove(this._id);
+    },
     'click .voteUp' (event) {
         // Prevent default browser form submit
         event.preventDefault();
         // Check if previously voted
         let cookie = Cookie.get("caseRetreatVote");
-        if (!cookie || cookie.indexOf(this._id+"_vote_") < 0) {
+        if (!cookie || cookie.indexOf(this._id + "_vote_") < 0) {
             Questions.update({
                 _id: this._id
             }, {
@@ -285,7 +322,11 @@ Template.question.events({
             const target = event.target;
             const text = target.text.value;
             let comments = this.comments;
-            comments.push({text: text, votes: 0, idx: comments.length});
+            comments.push({
+                text: text,
+                votes: 0,
+                idx: comments.length
+            });
             // Insert comment in collection
             Questions.update({
                 _id: this._id
@@ -300,10 +341,47 @@ Template.question.events({
     },
 });
 
+Template.comment.onCreated(function helloOnCreated() {
+    // counter starts at 0
+    this.authorized = new ReactiveVar(false);
+    var self = this;
+    let adminCookie = Cookie.get("caseAdmin");
+    if (adminCookie) {
+        Meteor.apply("passCode", [adminCookie], function(error, result) {
+            self.authorized.set(result);
+        });
+    }
+});
+
 Template.comment.helpers({
     commentVoted() {
         let cookie = Cookie.get("caseRetreatVote");
-        return (cookie && cookie.indexOf(this.parentID +"_comment_"+ (this.idx) + "+") >= 0) ? "alreadyUp" : "soft";
+        return (cookie && cookie.indexOf(this.parentID + "_comment_" + (this.idx) + "+") >= 0) ? "alreadyUp" : "soft";
+    },
+    'click .borrarComment' (event){
+        event.preventDefault();
+        let question = Questions.findOne(this.parentID);
+        let comments = question.comments;
+        let newComments = [];
+        comments.forEach(function(d,i){
+           if (d.idx != this.idx) {
+               newComments.append({
+                   text: d.text,
+                    votes: d.votes,
+                    idx: i});
+           }
+        });
+        Questions.update({
+                _id: question._id
+            }, {
+                $set: {
+                    comments: newComments
+                }
+            });
+
+    },
+    'admin' () {
+        return Template.instance().authorized.get();
     }
 });
 
@@ -316,9 +394,9 @@ Template.comment.events({
         let question = Questions.findOne(this.parentID);
         let comments = question.comments;
         let cookie = Cookie.get("caseRetreatVote");
-        let cookieTxt = this.parentID +"_comment_"+ (this.idx);
+        let cookieTxt = this.parentID + "_comment_" + (this.idx);
         if (!cookie || cookie.indexOf(cookieTxt) < 0) {
-            comments[this.idx].votes = comments[this.idx].votes+1;
+            comments[this.idx].votes = comments[this.idx].votes + 1;
             Questions.update({
                 _id: question._id
             }, {
@@ -333,7 +411,7 @@ Template.comment.events({
             }
             Cookie.set("caseRetreatVote", newCookie);
         } else {
-            comments[this.idx].votes = comments[this.idx].votes-1;
+            comments[this.idx].votes = comments[this.idx].votes - 1;
             Questions.update({
                 _id: question._id
             }, {
