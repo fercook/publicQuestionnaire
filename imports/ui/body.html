@@ -1,68 +1,99 @@
 <body>
     <div class="container">
-        <h1>What would you like to discuss on next CASE's retreat?</h1>
-        <div class="panel panel-default" id="newQuestion">
-            <div class="panel-heading">
-                <h3 class="panel-title">Suggest a new topic or question</h3>
-            </div>
-            <div class="panel-body">
-                {{> newQuestion}}
-            </div>
-        </div>
-
-
-        <div class="panel panel-default" id="questionList">
-            <div class="panel-heading">
-                <h3 class="panel-title">Or vote/comment on what others have suggested</h3>
-            </div>
-            <table class="table">
-                <tbody>
-                    {{> listOfQuestions}}
-                </tbody>
-            </table>
-        </div>
+        {{> newQuestion}} {{> listOfQuestions}}
     </div>
 </body>
 
 
 <template name="newQuestion">
-    {{#if debugMode}}
-    <div class="panel panel-default borrar" id="borrar">
-            BORRAR TODO
+    <h1>What would you like to discuss on next CASE's retreat?</h1>
+    <div class="panel panel-default" id="newQuestion">
+        <div class="panel-heading">
+            <h3 class="panel-title">Suggest a new topic or question</h3>
+        </div>
+        <div class="panel-body">
+
+            {{#if admin}}
+            <form>
+                <div class="form-group row">
+                    <div class="offset-sm-4 col-sm-8">
+                        <button type="cancel" class="btn btn-danger borrar" id="borrar">BORRAR TODO</button>
+                    </div>
+                </div>
+            </form>
+            {{/if}}
+
+            <form class="new-question">
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <label class="sr-only" for="inlineFormInput">Question</label>
+                        <input type="text" name="text" class="form-control" placeholder="Type to add a new question" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
     </div>
-    {{/if}}
-    <form class="new-question">
-        <input type="text" name="text" class="form-control" placeholder="Type to add a new question" aria-describedby="basic-addon1">
-    </form>
 </template>
 
 
 
 <template name="listOfQuestions">
-    {{#each questions}}
-    <tr>{{> question}}
-    </tr>
-    {{/each}}
+    <h1>Current list of suggestions</h1>
+    <div class="panel panel-default" id="questionList">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-sm-8">
+                    <h3 class="panel-title">Vote/comment on what others have suggested</h3>
+                </div>
+                <div class="col-sm-2">
+                    <span class="toggler">Sort by <span class="sortVotes hoverBold">votes <span class="{{voteSortCriteria}}" aria-hidden="true"> </span> </span>or <span class="sortDate hoverBold">date <span class="{{dateSortCriteria}}" aria-hidden="true"> </span></span>
+                    </span>
+                </div>
+                <div class="col-sm-2">
+                    <span class="pull-right hoverBold toggler toggleAllComments">Show all comments</span>
+                </div>
+            </div>
+        </div>
+        <table class="table">
+            <tbody>
+                {{#each questions}}
+                <tr>{{> question}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
 </template>
 
 
 <template name="question">
     <td>
         <span class="question">{{text}}
+            {{#if admin}} <button type="cancel" class="btn btn-danger borrar" id="">BORRAR</button> {{/if}}
         </span>
         <span class="votingFooter">
-        <span class="glyphicon glyphicon-arrow-up voteUp {{alreadyUp}}" aria-hidden="true"></span>  <span class="arrows {{posORneg}}">{{diff}}</span> (+{{votesUp}}/-{{votesDown}}) <span class="glyphicon glyphicon-arrow-down voteDown {{alreadyDown}}" aria-hidden="true"></span>
-        <span class="pull-right toggleComments">Show comments</span>
+            <span class="voteUp">
+                <span class="glyphicon glyphicon-thumbs-up voteArrow voteColor {{alreadyUp}}" aria-hidden="true"></span>
+            </span>
+            <span class="soft likes">+{{votesUp}}</span>
+        <span class="date">Proposed on: {{formatDate createdAt}}</span>
+        <span class="pull-right toggle hoverBold toggleComment">Show / Add comments</span>
         </span>
         <span class="comments collapse" aria-expanded="false" style="height: 0px;" id="comments_{{_id}}">
             <ul>
                 {{#each comments}}
-                <li>{{> comment}}
+                <li>
+                    {{> comment}}
                 </li>
                 {{/each}}
             </ul>
             <form class="new-comment">
-                            <input type="text" name="text" class="form-control" placeholder="Add a comment..." aria-describedby="basic-addon1">
+                <input type="text" name="text" class="form-control" placeholder="Add a comment..." aria-describedby="basic-addon1">
             </form>
         </span>
     </td>
@@ -71,9 +102,17 @@
 
 
 <template name="comment">
-        <span class="comment">
-            {{this}}
+
+    <span class="comment">
+        {{text}}
+        <span class="voteUp">
+            <span class="glyphicon glyphicon-thumbs-up commentVoting voteColor {{commentVoted}}" aria-hidden="true"></span>
         </span>
+        <span class="soft likes">+{{votes}}</span>
+
+    </span>
+
+
 </template>
 
 

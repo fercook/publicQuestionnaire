@@ -1,66 +1,90 @@
 /* CSS declarations go here */
-.toggleComments {
+
+.toggle {
     font-size: small;
     font-style: italic;
     color: darkslategray;
 }
-
 .toggleComments:hover {
-    color: steelblue;
 }
-
-.voteUp:hover {
+.voteArrow {
+    font-size: large;
+    vertical-align: middle;
+}
+.voteColor {
+    color: #b9b9b9;
+}
+.date {
+    color: #b9b9b9;
+    padding-left: 26px;
+}
+.voteColor:hover {
     color: green;
 }
-
+.soft {
+    vertical-align: middle;
+}
+.likes {
+        color: #b9b9b9;
+}
+.voteUp{
+    padding: 6px;
+}
 .voteDown:hover {
     color: red;
 }
-
+.voteDifference {
+    font-size: large;
+    vertical-align: middle;
+    font-weight: bold;
+}
+.hoverBold:hover{
+    font-weight: bold;
+}
 .alreadyDown {
     color: red;
 }
-
 .alreadyUp {
     color: green;
 }
-
 .positive {
     color: green;
 }
-
 .negative {
     color: red;
 }
-
 .arrows {
     font-weight: bold;
 }
-
 .comments {
     padding-top: 14px;
 }
-
 .comment {
     font-style: italic;
     padding-top: 7px;
 }
-
+.toggler {
+    font-style: italic;
+}
 .question {
     width: 100%;
-    display:block;
+    display: block;
     padding-bottom: 10px;
-    padding-top:6px;
+    padding-top: 6px;
 }
-
 .new-comment {
     padding: 8px;
     padding-top: 12px;
     width: 96%;
     padding-left: 4%;
 }
-
 .votingFooter {
     padding-left: 16px;
 }
-
+.commentVoting {
+    font-size: small;
+    vertical-align: middle;
+}
+.commentVoting:hover {
+    color: green;
+}
