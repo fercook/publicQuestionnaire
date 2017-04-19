@@ -20,7 +20,7 @@ Template.newQuestion.onCreated(function helloOnCreated() {
 
 Template.newQuestion.helpers({
     debugMode() {
-        return true;
+        return false;
     }
 });
 
