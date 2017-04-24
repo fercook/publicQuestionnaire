@@ -43,9 +43,12 @@ Template.newQuestion.onCreated(function helloOnCreated() {
 });
 
 Template.newQuestion.helpers({
-        'admin' () {
+    'admin' () {
         return Template.instance().authorized.get();
     },
+    'superadmin' () {
+        return false;
+    }
 });
 
 Template.newQuestion.events({
