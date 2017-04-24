@@ -77,10 +77,10 @@
             {{#if admin}} <button type="cancel" class="btn btn-danger borrarQuestion pull-right" id="">BORRAR</button> {{/if}}
         </span>
         <span class="votingFooter">
+            <span class="soft likes">{{votesUp}}</span>
             <span class="voteUp">
                 <span class="glyphicon glyphicon-thumbs-up voteArrow voteColor {{alreadyUp}}" aria-hidden="true"></span>
             </span>
-            <span class="soft likes">+{{votesUp}}</span>
         <span class="date">Proposed on: {{formatDate createdAt}}</span>
         <span class="pull-right toggle hoverBold toggleComment">Show / Add comments</span>
         </span>
