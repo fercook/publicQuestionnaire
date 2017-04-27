@@ -61,7 +61,8 @@ Template.newQuestion.events({
         const text = target.text.value;
 
         // Insert a task into the collection
-        Questions.insert({
+        if (text.length>0){
+            Questions.insert({
             text: text,
             createdAt: new Date(), // current time
             votesUp: 0,
@@ -69,6 +70,7 @@ Template.newQuestion.events({
             modifiedAt: new Date(),
             comments: []
         });
+        }
 
         // Clear form
         target.text.value = '';
